@@ -1,0 +1,6 @@
+export const queryAll = 'queryAll'
+export const makefood = 'makefood'
+export const balefood = 'balefood'
+export const packfood = 'packfood'
+export const tranportfood = 'tranportfood'
+export const abnormal = 'abnormal'
