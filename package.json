@@ -1,7 +1,7 @@
 {
-  "name": "厨房进度监控系统",
+  "name": "vue2-vuex2-webpack-gulp",
   "version": "1.0.0",
-  "author": "李煜",
+  "author": "liyu",
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
