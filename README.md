@@ -23,4 +23,5 @@ PS：为了支持类似fis的`__inline`和`__sprite`语法（base64和雪碧图�
 1. 加入了vue-template-compiler模块.vue文件解析。
 2. 参考官网webpack例子，使用的是"webpack": "^2.1.0-beta.25"版本，但是后面使用vue构建工具创建的项目"webpack": "^1.13.2"，这个没现在没具体去看有什么区别
 3. webpack2.x版本整个写法已经有了不同。比如：*-loader，之前1.x版本不用加-loader。然后vue自己的loader需要写在options属性中。
+4. webpack中别名alias需要指定vue的路径，因为其中会存在其他版本vue会引起的错误。
 
