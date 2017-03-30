@@ -20,6 +20,10 @@ var gulp = require('gulp'),
     webpack = require('webpack'),
     webpackConfig = require('./webpack.config.js'),
     sourcemaps = require('gulp-sourcemaps'),
+    postcss = require('gulp-postcss');
+    autoprefixer = require('autoprefixer'),
+    vinylPaths = require('vinyl-paths'),
+    del = require('del'),
     connect = require('gulp-connect');
 
 var host = {
@@ -58,6 +62,7 @@ gulp.task('sass', function (done) {
 //      .on('end', done);
 		 gulp.src(['src/css/*.css','src/css/*.scss'])       		  //压缩的文件
     	 .pipe(sourcemaps.init())
+    	 .pipe(postcss([ autoprefixer() ]))
     	 .pipe(sass().on('error', sass.logError)) //解析sass
     	 .pipe(concat('app.min.css'))
     	 .pipe(sourcemaps.write('./'))				  //map映射文件
@@ -76,23 +81,34 @@ gulp.task('sass', function (done) {
 
 //将js加上10位md5,并修改html中的引用路径，该动作依赖build-js
 gulp.task('md5:js', ['build-js'], function (done) {
-    gulp.src('dist/js/*.js')
-        .pipe(md5(10, 'dist/app/*.html'))
+	var befor = vinylPaths();
+    gulp.src('dist/js/**/*.js')
+    	.pipe(befor)
+    	.pipe(uglify())
+        .pipe(md5(10, 'dist/app/**/*.html'))
         .pipe(gulp.dest('dist/js'))
-        .on('end', done);
+        .on('end', function(){
+        	console.log("finished md5:js");
+        	del(befor.paths,done);
+        });
 });
 
 //将css加上10位md5，并修改html中的引用路径，该动作依赖sprite
-gulp.task('md5:css', ['sprite'], function (done) {
+gulp.task('md5:css', ['sprite','build-js'], function (done) {
+	var befor = vinylPaths();
     gulp.src('dist/css/*.css')
-        .pipe(md5(10, 'dist/app/*.html'))
+    	.pipe(befor)
+        .pipe(md5(10, 'dist/app/**/*.html'))
         .pipe(gulp.dest('dist/css'))
-        .on('end', done);
+        .on('end', function(){
+        	console.log("finished md5:css");
+        	del(befor.paths,done);
+        });
 });
 
 //用于在html文件中直接include文件
 gulp.task('fileinclude', function (done) {
-    gulp.src(['src/app/*.html'])
+    gulp.src(['src/app/**/*.html'])
         .pipe(fileinclude({
           prefix: '@@',
           basepath: '@file'
@@ -121,9 +137,9 @@ gulp.task('sprite', ['copy:images', 'sass'], function (done) {
 });
 
 gulp.task('clean', function (done) {
-    gulp.src(['dist'])
+    return gulp.src(['dist'])
         .pipe(clean())
-        .on('end', done);
+        ;
 });
 
 gulp.task('watch', function (done) {
@@ -165,7 +181,10 @@ gulp.task("build-js", ['fileinclude'], function(callback) {
 });
 
 //发布
-gulp.task('default', ['connect', 'copy:fonts', 'md5:css', 'md5:js', 'open']);
+gulp.task('default',['clean'], function () {
+//	gulp.start('copy:fonts', 'md5:css', 'md5:js');
+	gulp.start('connect', 'copy:fonts', 'md5:css', 'md5:js', 'open');
+});
 
 //开发
 gulp.task('dev', ['connect', 'copy:fonts', 'copy:images', 'sass', 'build-js', 'watch', 'open']);
