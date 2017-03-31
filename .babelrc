@@ -2,11 +2,7 @@
   "presets": [
     ["es2015", { "modules": false }]
   ],
-  "plugins": ["transform-object-rest-spread","transform-object-assign",
-  	["component",[
-    {
-      "libraryName": "element-ui",
-      "styleLibraryName": "theme-default"
-    }
-  ]]]
+  "plugins": [
+  	"transform-object-rest-spread","transform-object-assign"
+  ]
 }

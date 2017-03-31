@@ -52,7 +52,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "element-ui": "^1.2.5",
     "vue": "^2.1.4",
     "vuex": "^2.0.0"
   }

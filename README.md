@@ -1,4 +1,4 @@
-#积分宝宝系统
+#自动构建系统
 
 1：vue2 webpack gulp自动构建
 
@@ -7,7 +7,6 @@
 3：css使用sass进行解析并统一合并成app.min.css
 
 4：js支持ES6标准
-
 
 ---
 PS：为了支持类似fis的`__inline`和`__sprite`语法（base64和雪碧图），对依赖包`gulp-css-base64`和`gulp-css-spriter`都做了修改，所以暂时保留在node_modules中。不必再下载这两个包。
